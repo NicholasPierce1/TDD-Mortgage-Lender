@@ -4,7 +4,9 @@ so that I know how much money I can offer for loans.
 
 When I check my available funds
 Then I should see how much funds I currently have
-As a lender, I want to add money to my available funds, so that I can offer loans to potential home buyers.
+
+As a lender, I want to add money to my available funds,
+so that I can offer loans to potential home buyers.
 
 Given I have <current_amount> available funds
 When I add <deposit_amount>

@@ -11,4 +11,8 @@ public class Lender {
     public double getAvailableFunds() {
         return this._availableFunds;
     }
+
+    public void depositFunds(double depositAmount) {
+         _availableFunds += depositAmount;
+    }
 }
