@@ -54,7 +54,8 @@ Given I have approved a loan
 When a loan offer is sent
 Then the requested loan amount is moved from available funds to pending funds
 And the loan status is marked as pending
-As a lender, I want to receive response for loan offers, so that I can update the status of pending loans.
+As a lender, I want to receive response for loan offers,
+so that I can update the status of pending loans.
 
 Given I have sent a loan offer to a qualified applicant
 When the applicant accepts my loan offer

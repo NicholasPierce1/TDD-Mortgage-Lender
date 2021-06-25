@@ -1,16 +1,13 @@
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Lender {
-
-
-    // defines internal enum for Loan Approval for qualified applicants
-    enum LoanStatus {
-        APPROVED, DENIED
-    }
 
     // enumerates member fields
 
     private double _availableFunds = 0;
+
+    private double _pendingFunds = 0;
 
 
     // enumerates instance methods
@@ -19,14 +16,18 @@ public class Lender {
         return this._availableFunds;
     }
 
+    public double getPendingFunds(){
+        return this._pendingFunds;
+    }
+
     public void depositFunds(final double depositAmount) {
          _availableFunds += depositAmount;
     }
 
-    public LoanStatus getLoanApprovalStatus(final double requestedLoanAmount){
+    public Loan.LoanStatus getLoanApprovalStatus(final double requestedLoanAmount){
         return this._availableFunds >= requestedLoanAmount ?
-                LoanStatus.APPROVED :
-                LoanStatus.DENIED;
+                Loan.LoanStatus.APPROVED :
+                Loan.LoanStatus.DENIED;
     }
 
     // Rule: Qualifying candidates must have debt-to-income (DTI)
@@ -40,6 +41,18 @@ public class Lender {
             int creditScore) {
 
         return dti < 36 && creditScore > 620 && savingsAmount / loanAmount >= 0.25;
+    }
+
+    public Loan getPendingLoanForApplicant(final double loanAmount){
+
+        this.transferAvailableFunds(loanAmount);
+
+        return new Loan(loanAmount, Loan.LoanStatus.PENDING);
+    }
+
+    private void transferAvailableFunds(final double amountToTransfer){
+       this._availableFunds -= amountToTransfer;
+       this._pendingFunds += amountToTransfer;
     }
 
 }

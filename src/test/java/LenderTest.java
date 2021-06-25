@@ -72,7 +72,7 @@ public class LenderTest {
         // test 1 (approved by margin)
         final double testOneLoanAmount = 125000;
         final double testOneAvailableFunds = 200000;
-        final Lender.LoanStatus testOneLoanStatus = Lender.LoanStatus.APPROVED;
+        final Loan.LoanStatus testOneLoanStatus = Loan.LoanStatus.APPROVED;
 
         // Execution
         lender.depositFunds(testOneAvailableFunds);
@@ -84,7 +84,7 @@ public class LenderTest {
 
         // test 2 (rejected by margin)
         final double testTwoLoanAmount = 250000;
-        final Lender.LoanStatus testTwoLoanStatus = Lender.LoanStatus.DENIED;
+        final Loan.LoanStatus testTwoLoanStatus = Loan.LoanStatus.DENIED;
 
         // Execution (no action -- available funds constant from test one)
 
@@ -96,7 +96,7 @@ public class LenderTest {
         // test 3 (approved with no margin)
         final double testThreeLoanAmount = 250000;
         final double testThreeAvailableFunds = 250000;
-        final Lender.LoanStatus testThreeLoanStatus = Lender.LoanStatus.APPROVED;
+        final Loan.LoanStatus testThreeLoanStatus = Loan.LoanStatus.APPROVED;
 
         // Execution
         // need 250k, already have 200k | 200k + (250k - 200k) == 250k
@@ -196,20 +196,21 @@ public class LenderTest {
 
     }
 
-    /*
+
     @Test
     public void testGetApprovedLoan(){
 
         // SEAT
 
-        // Test 1 (invalid -- application approved BUT lender does not have sufficient available funds)
-        final double testOneLoanAmount  = 200000;
-        final double testOneSavingsAmount  = 50000;
-        final int testOneDti  = 35;
-        final int testOneCreditScore = 621;
-        final boolean testOneExpected = false;
+        // Test 1
+        final double inputLoanAmount  = 100000;
 
-        // no partial loan needed -- loan not granted/created
+        // Setup
+        // applicant's loan approval request (valid && lender has funds)
+
+        final Loan partialExpectedLoan = new Loan(inputLoanAmount, Loan.LoanStatus.PENDING);
+
+        final double expectedAvailableFunds = 0;
 
         // lenders initial funds availability
         final double lenderAvailability = 100000;
@@ -217,83 +218,11 @@ public class LenderTest {
         // Execution
         lender.depositFunds(lenderAvailability);
 
-        final Optional<Loan> testOneActualLoan = lender.getPendingLoanForApplicant(
-                testOneLoanAmount,
-                testOneSavingsAmount,
-                testOneDti,
-                testOneCreditScore
-        );
+        final Loan actualLoan = lender.getPendingLoanForApplicant(inputLoanAmount);
 
         // Assertion
-        assertEquals(testOneExpected, testOneActualLoan.isPresent(), "testGetApprovedLoan: test one");
-
-
-        // Termination (no action)
-
-        // Test 2 (invalid -- regardless of lender's fund availability)
-        // applicant's loan approval request (invalid -- regardless of lender's fund availability)
-
-        // no partial loan needed -- loan not granted/created
-
-        final double testTwoLoanAmount  = 100000;
-        final double testTwoSavingsAmount  = 24000;
-        final int testTwoDti  = 36;
-        final int testTwoCreditScore = 620;
-        final boolean testTwoExpected = false;
-
-        // Execution
-
-        final Optional<Loan> testTwoActualLoan = lender.getPendingLoanForApplicant(
-                testTwoLoanAmount,
-                testTwoSavingsAmount,
-                testTwoDti,
-                testTwoCreditScore
-        );
-
-        // Assertion
-        assertEquals(testTwoExpected, testTwoActualLoan.isPresent(), "testGetApprovedLoan: test two");
-
-
-        // Termination (no action)
-
-
-        // Test 3 (valid && lender has funds)
-        final double testThreeLoanAmount  = 100000;
-        final double testThreeSavingsAmount  = 25000;
-        final int testThreeDti  = 35;
-        final int testThreeCreditScore = 621;
-        final boolean testThreeExpected = true;
-
-        // Setup
-        // applicant's loan approval request (valid && lender has funds)
-
-        final Loan partialExpectedLoan = new Loan(){{
-            setLoanAmount(100000);
-            setLoanStatus(Loan.LoanStatus.PENDING);
-        }};
-
-        final double validInputLoanAmount  = 100000;
-        final double validInputSavingsAmount  = 25000;
-        final int validInputDti  = 35;
-        final int validInputCreditScore = 621;
-        final boolean validExpected = true;
-
-
-        // Execution
-        final Optional<Loan> testFourActualLoanOptional = lender.getPendingLoanForApplicant(
-                inputLoanAmount,
-                inputSavingsAmount,
-                inputDti,
-                inputCreditScore
-        );
-
-        // Assertion
-
-        assertEquals(validExpected, testFourActualLoanOptional.isPresent(), "testGetApprovedLoan: test three");
 
         // extract Loan
-        final Loan actualLoan = testFourActualLoanOptional.orElseThrow();
-
         // Loan: loan amount
         assertEquals(
                 partialExpectedLoan.getLoanAmount(),
@@ -310,14 +239,21 @@ public class LenderTest {
 
         // Lender: available funds
         assertEquals(
-                ,
-                actualLoan.getLoanAmount(),
-                "Loan amounts are not equal. Please revise."
+                expectedAvailableFunds,
+                lender.getAvailableFunds(),
+                "Lender's available funds are not equal. Please revise."
         );
 
+        // Lender: pending funds
+        assertEquals(
+                inputLoanAmount,
+                lender.getPendingFunds(),
+                "Lender's pending funds are not equal. Please revise."
+        );
+
+        // Termination (no action)
 
     }
 
-    
-     */
+
 }
