@@ -55,4 +55,26 @@ public class Lender {
        this._pendingFunds += amountToTransfer;
     }
 
+    private void transferPendingFunds(final double amountToTransfer){
+        this._availableFunds += amountToTransfer;
+        this._pendingFunds -= amountToTransfer;
+    }
+
+    public void handleLoanResponse(final Loan loan, final boolean hasAccepted){
+
+        if(hasAccepted){
+
+            this._pendingFunds -= loan.getLoanAmount();
+            loan.setLoanStatus(Loan.LoanStatus.ACCEPTED);
+
+        }
+        else{ // rejects
+
+            this.transferPendingFunds(loan.getLoanAmount());
+            loan.setLoanStatus(Loan.LoanStatus.REJECTED);
+
+        }
+
+    }
+
 }

@@ -251,7 +251,102 @@ public class LenderTest {
                 "Lender's pending funds are not equal. Please revise."
         );
 
-        // Termination (no action)
+
+    }
+
+    @Test
+    public void testHandleLoanResponse(){
+
+        // SEAT
+
+        // Setup
+
+        final double lenderAvailability = 500000;
+
+        double currentAvailability;
+        double currentPendingFunds;
+
+        final Loan loanToAccept;
+        final double loanToAcceptAmount = 100000;
+        final Loan.LoanStatus expectedAcceptedLoanStatus = Loan.LoanStatus.ACCEPTED;
+
+        final Loan loanToReject;
+        final double loanToRejectAmount = 200000;
+        final Loan.LoanStatus expectedRejectedLoanStatus = Loan.LoanStatus.REJECTED;
+
+
+        // Execution
+
+        // initializing (making the loans live)
+        loanToAccept = lender.getPendingLoanForApplicant(loanToAcceptAmount);
+        loanToReject = lender.getPendingLoanForApplicant(loanToRejectAmount);
+
+        // updates placeholder state for current lender
+        currentAvailability = lender.getAvailableFunds();
+        currentPendingFunds = lender.getPendingFunds();
+
+
+        // submit responses to loans (loan to accept first)
+        lender.handleLoanResponse(loanToAccept, true);
+
+        // Assertion
+
+        // loan acceptance: available funds
+        assertEquals(
+                currentAvailability,
+                lender.getAvailableFunds(),
+                "testHandleLoanResponse - Loan Acceptance: available funds not equal, please revise."
+        );
+
+        // loan acceptance: pending funds
+        assertEquals(
+                currentPendingFunds - loanToAcceptAmount,
+                lender.getPendingFunds(),
+                "testHandleLoanResponse - Loan Acceptance: pending funds not equal, please revise."
+        );
+
+        // loan acceptance: Loan Status
+        assertEquals(
+                expectedAcceptedLoanStatus,
+                loanToAccept.getLoanStatus(),
+                "testHandleLoanResponse - Loan Acceptance: loan statuses are not equal, please revise."
+        );
+
+        // updates placeholder state for current lender
+        currentAvailability = lender.getAvailableFunds();
+        currentPendingFunds = lender.getPendingFunds();
+
+        lender.handleLoanResponse(loanToReject, false);
+
+        // loan rejection: available funds
+        assertEquals(
+                currentAvailability + loanToRejectAmount,
+                lender.getAvailableFunds(),
+                "testHandleLoanResponse - Loan Rejection: available funds not equal, please revise."
+        );
+
+        // loan rejection: pending funds
+        assertEquals(
+                currentPendingFunds - loanToRejectAmount,
+                lender.getPendingFunds(),
+                "testHandleLoanResponse - Loan Rejection: pending funds not equal, please revise."
+        );
+
+        // loan rejection: Loan Status
+        assertEquals(
+                expectedRejectedLoanStatus,
+                loanToReject.getLoanStatus(),
+                "testHandleLoanResponse - Loan Rejection: loan statuses are not equal, please revise."
+        );
+
+        // pending funds shall be balanced out again
+        assertEquals(
+                lender.getPendingFunds(),
+                0,
+                "testHandleLoanResponse - Loan Rejection: pending funds should be clears as all loan decisions" +
+                        " have been made. Please revise."
+                );
+
 
     }
 
