@@ -30,9 +30,13 @@ Example:
 |   125,000   |    100,000      |    denied   |
 |   125,000   |    200,000      |  approved   |
 |   125,000   |    125,000      |  approved   |
-As a lender, I want to qualify loan applications, so that I can ensure I get my money back.
 
-Rule: Qualifying candidates must have debt-to-income (DTI) less than 36%, credit score above 620 and savings worth 25% of requested loan amount.
+As a lender, I want to qualify loan applications, 
+so that I can ensure I get my money back.
+
+Rule: Qualifying candidates must have debt-to-income (DTI) 
+less than 36%, credit score above 620 and savings worth 25%
+of requested loan amount.
 
 Given a loan applicant with <dti> DTI, <credit score> credit score, and <savings> savings
 When they apply for a loan

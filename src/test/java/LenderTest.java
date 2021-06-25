@@ -107,4 +107,90 @@ public class LenderTest {
 
     }
 
+    @Test
+    public void testIsApplicantQualified() {
+
+        // SEAT
+
+        // Test 1 (Applicant denied via dti)
+        // Setup
+        final double testOneLoanAmount  = 100000;
+        final double testOneSavingsAmount  = 25000;
+        final int testOneDti  = 36;
+        final int testOneCreditScore = 700;
+        final boolean testOneExpected = false;
+
+        // Execution (no action)
+
+        // Assertion
+        assertEquals(testOneExpected, lender.isApplicantQualified(
+                testOneLoanAmount,
+                testOneSavingsAmount,
+                testOneDti,
+                testOneCreditScore)
+        );
+        // Teardown (no action)
+
+        // Test 2 (Applicant denied via Credit Score)
+
+        // Setup
+        final double testTwoLoanAmount  = 100000;
+        final double testTwoSavingsAmount  = 25000;
+        final int testTwoDti  = 35;
+        final int testTwoCreditScore = 620;
+        final boolean testTwoExpected = false;
+
+        // Execution (no action)
+
+        // Assertion
+        assertEquals(testTwoExpected, lender.isApplicantQualified(
+                testTwoLoanAmount,
+                testTwoSavingsAmount,
+                testTwoDti,
+                testTwoCreditScore)
+        );
+        // Teardown (no action)
+
+        // Test 3 (Applicant denied via their savings to loan percentage)
+
+        // Setup
+        final double testThreeLoanAmount  = 100000;
+        final double testThreeSavingsAmount  = 24000;
+        final int testThreeDti  = 35;
+        final int testThreeCreditScore = 700;
+        final boolean testThreeExpected = false;
+
+        // Execution (no action)
+
+        // Assertion
+        assertEquals(testThreeExpected, lender.isApplicantQualified(
+                testThreeLoanAmount,
+                testThreeSavingsAmount,
+                testThreeDti,
+                testThreeCreditScore)
+        );
+        // Teardown (no action)
+
+        // Test 4 (Applicant approved)
+
+        // Setup
+        final double testFourLoanAmount  = 100000;
+        final double testFourSavingsAmount  = 25000;
+        final int testFourDti  = 35;
+        final int testFourCreditScore = 621;
+        final boolean testFourExpected = true;
+
+        // Execution (no action)
+
+        // Assertion
+        assertEquals(testFourExpected, lender.isApplicantQualified(
+                testFourLoanAmount,
+                testFourSavingsAmount,
+                testFourDti,
+                testFourCreditScore)
+        );
+
+        // Teardown (no action)
+
+    }
 }
