@@ -16,7 +16,10 @@ Examples:
 | current_amount | deposit_amount |   total  |
 |     100,000    |      50,000    | 150,000  |
 |     200,000    |      30,000    | 230,000  |
-As a lender, I want to approve or deny loans base on available funds, so that I don't go bankrupt.
+
+
+As a lender, I want to approve or deny loans base on available funds,
+so that I don't go bankrupt.
 
 Given I have <available funds> in available funds
 When a qualified applicant applies for <loan amount> loan
